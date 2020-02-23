@@ -1,0 +1,8 @@
+# ignore Mac system files
+.DS_store
+
+# ignore all text files
+*.txt
+
+# ignore environment variables
+.env

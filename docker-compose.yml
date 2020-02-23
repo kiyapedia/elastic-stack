@@ -1,0 +1,29 @@
+version: '3.7' # file version is specific to Docker Engine release versions. learn more here: https://docs.docker.com/compose/compose-file/compose-versioning/
+services:
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:7.6.0 # latest elasticsearch docker image from elastic
+    container_name: elasticsearch # setting our elasticsearch container name
+    environment:
+      node.name: es01 # setting our node name inside the 
+      cluster.initial_master_nodes: es01 # declaring our es01 node as master
+      ES_JAVA_OPTS: "-Xms512m -Xmx512m" # setting our JVM heap size. learn more here: https://www.elastic.co/guide/en/elasticsearch/reference/current/heap-size.html
+    volumes:
+      - ./elasticsearch/elasticsearch.yml:/usr/share/elasticsearch/config/elasticsearch.yml # volumes allow us to map our elasticsearch.yml file from the host machine to our docker container. learn more about volumes here: https://docs.docker.com/storage/volumes/
+    ports:
+      - 9200:9200 # setting elasticsearch accessibility on port 9200 on our host machine and docker container. these are the default ports for elasticsearch
+    networks:
+      - elastic  # referencing a docker network. more details below under networks
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:7.6.0 # latest elasticsearch docker image from elastic
+    container_name: kibana # setting our kibana container name
+    volumes:
+      - ./kibana/kibana.yml:/usr/share/kibana/config/kibana.yml # volumes allow us to map our kibana.yml file from the host machine to our docker container. learn more about volumes here: https://docs.docker.com/storage/volumes/
+    ports:
+      - 5601:5601 # setting kibana accessibility on port 5601 on our host machine and docker container. these are the default ports for kibana
+    networks:
+      - elastic # referencing a docker network. more details below under networks
+
+networks:
+  elastic:
+    driver: bridge # default network driver. learn more here: https://docs.docker.com/network/bridge/

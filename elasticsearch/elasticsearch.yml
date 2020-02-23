@@ -1,0 +1,2 @@
+cluster.name: es-docker-cluster # setting the name of our docker cluster
+network.host: 0.0.0.0 # making elasticsearch accessible to all IPs on the host machine
